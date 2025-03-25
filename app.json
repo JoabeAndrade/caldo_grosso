@@ -2,6 +2,7 @@
   "expo": {
     "name": "caldo_grosso",
     "slug": "caldo_grosso",
+    "scheme": "primeiro",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -24,8 +25,14 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "fonts": [
+      {
+        "asset": "./assets/fonts/NomeDaFonte-Regular.ttf"
+      }
+    ],
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "expo-font"
     ]
   }
 }
