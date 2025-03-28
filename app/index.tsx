@@ -6,15 +6,25 @@ import {
   TouchableOpacity,
   Text,
   FlatList,
+  LayoutAnimation,
+  Platform,
+  UIManager,
 } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
 import OrderingOptions from "../components/OrderingOptions";
 import Footer from "../components/Footer";
+
+// Ativar animações para Android
+if (Platform.OS === "android") {
+  if (UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
+}
 
 type ScreenItemBase = {
   id?: string;
@@ -34,9 +44,21 @@ type OrderingItem = ScreenItemBase & {
 
 type ScreenDataItem = HeaderItem | OrderingItem;
 
+type SectionIndices = {
+  marmitex: number;
+  saladas: number;
+  refrigerantes: number;
+  sucos_e_chas: number;
+  aguas: number;
+  chocolates: number;
+};
+
+type DropdownValue = keyof SectionIndices;
+
 export default function Screen() {
+  const flatListRef = useRef<FlatList<ScreenDataItem>>(null);
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState<string | null>(null);
+  const [value, setValue] = useState<DropdownValue | null>(null);
   const [items, setItems] = useState([
     { label: "MARMITEX", value: "marmitex" },
     { label: "SALADAS", value: "saladas" },
@@ -45,6 +67,15 @@ export default function Screen() {
     { label: "ÁGUAS", value: "aguas" },
     { label: "CHOCOLATES", value: "chocolates" },
   ]);
+
+  const sectionIndices: SectionIndices = {
+    marmitex: 0,
+    saladas: 3,
+    refrigerantes: 6,
+    sucos_e_chas: 9,
+    aguas: 12,
+    chocolates: 15,
+  };
 
   const data: ScreenDataItem[] = [
     { type: "header", title: "MARMITEX" },
@@ -127,6 +158,30 @@ export default function Screen() {
     },
   ];
 
+  useEffect(() => {
+    if (value && flatListRef.current) {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+
+      const index = sectionIndices[value];
+      setTimeout(() => {
+        flatListRef.current?.scrollToIndex({
+          index,
+          animated: true,
+          viewPosition: 0.1,
+        });
+      }, 300);
+    }
+  }, [value]);
+
+  const getItemLayout = (
+    data: ArrayLike<ScreenDataItem> | null | undefined,
+    index: number
+  ) => ({
+    length: 100,
+    offset: 100 * index,
+    index,
+  });
+
   const renderItem = ({ item }: { item: ScreenDataItem }) => {
     switch (item.type) {
       case "header":
@@ -154,7 +209,6 @@ export default function Screen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Seção Superior Fixa */}
       <View style={styles.topSection}>
         <Image
           source={require("../assets/images/banner1280x426_v1672623700.png")}
@@ -212,7 +266,6 @@ export default function Screen() {
           </View>
         </View>
 
-        {/* Dropdown Centralizado */}
         <View style={styles.drop}>
           <DropDownPicker
             open={open}
@@ -225,25 +278,30 @@ export default function Screen() {
             style={styles.dropdown}
             dropDownContainerStyle={styles.dropdownContainer}
             listMode="SCROLLVIEW"
-            scrollViewProps={{
-              nestedScrollEnabled: true,
-            }}
-            dropDownDirection="BOTTOM"
+            scrollViewProps={{ nestedScrollEnabled: true }}
             zIndex={1000}
             zIndexInverse={3000}
           />
         </View>
       </View>
 
-      {/* Lista Principal */}
       <FlatList
+        ref={flatListRef}
         data={data}
         renderItem={renderItem}
+        getItemLayout={getItemLayout}
         keyExtractor={(item, index) => index.toString()}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
         nestedScrollEnabled
         ListHeaderComponent={<View style={{ height: 10 }} />}
+        onScrollToIndexFailed={({ index, averageItemLength }) => {
+          const offset = index * averageItemLength;
+          flatListRef.current?.scrollToOffset({ offset, animated: false });
+          setTimeout(() => {
+            flatListRef.current?.scrollToIndex({ index, animated: true });
+          }, 100);
+        }}
       />
 
       <Footer />
