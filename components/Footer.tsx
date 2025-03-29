@@ -1,6 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Fontisto from "@expo/vector-icons/Fontisto";
+import { Link } from "expo-router";
 
 export default function Footer() {
   return (
@@ -13,10 +14,12 @@ export default function Footer() {
         <Fontisto name="search" size={20} color="#dc5c20" />
         <Text style={styles.footerText}>Busca</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.footerIcons}>
-        <MaterialIcons name="login" size={20} color="#dc5c20" />
-        <Text style={styles.footerText}>Entrar</Text>
-      </TouchableOpacity>
+      <Link href="/login" asChild>
+        <TouchableOpacity style={styles.footerIcons}>
+          <MaterialIcons name="login" size={20} color="#dc5c20" />
+          <Text style={styles.footerText}>Entrar</Text>
+        </TouchableOpacity>
+      </Link>
     </View>
   );
 }

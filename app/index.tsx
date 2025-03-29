@@ -9,6 +9,7 @@ import {
   LayoutAnimation,
   Platform,
   UIManager,
+  LayoutChangeEvent,
 } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
@@ -19,7 +20,6 @@ import DropDownPicker from "react-native-dropdown-picker";
 import OrderingOptions from "../components/OrderingOptions";
 import Footer from "../components/Footer";
 
-// Ativar animações para Android
 if (Platform.OS === "android") {
   if (UIManager.setLayoutAnimationEnabledExperimental) {
     UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -67,6 +67,8 @@ export default function Screen() {
     { label: "ÁGUAS", value: "aguas" },
     { label: "CHOCOLATES", value: "chocolates" },
   ]);
+
+  const [topSectionHeight, setTopSectionHeight] = useState(0);
 
   const sectionIndices: SectionIndices = {
     marmitex: 0,
@@ -209,7 +211,13 @@ export default function Screen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.topSection}>
+      <View
+        style={styles.topSection}
+        onLayout={(event: LayoutChangeEvent) => {
+          const { height } = event.nativeEvent.layout;
+          setTopSectionHeight(height + 20); // Adiciona margem de segurança
+        }}
+      >
         <Image
           source={require("../assets/images/banner1280x426_v1672623700.png")}
           style={styles.image_banner}
@@ -291,7 +299,10 @@ export default function Screen() {
         renderItem={renderItem}
         getItemLayout={getItemLayout}
         keyExtractor={(item, index) => index.toString()}
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={[
+          styles.scrollContent,
+          { paddingTop: topSectionHeight + 30 }, // Espaço extra para segurança
+        ]}
         showsVerticalScrollIndicator={false}
         nestedScrollEnabled
         ListHeaderComponent={<View style={{ height: 10 }} />}
@@ -303,7 +314,6 @@ export default function Screen() {
           }, 100);
         }}
       />
-
       <Footer />
     </SafeAreaView>
   );
@@ -315,8 +325,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#f3f5f7",
   },
   topSection: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
     zIndex: 1000,
     elevation: 1000,
+    backgroundColor: "#f3f5f7",
   },
   image_banner: {
     width: "100%",

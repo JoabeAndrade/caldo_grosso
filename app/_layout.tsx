@@ -4,10 +4,21 @@ export default function RootLayout() {
   return (
     <Stack
       screenOptions={{
-        headerShown: false,
+        headerShown: true,
       }}
     >
-      <Stack.Screen name="index" options={{ title: "Home" }} />
+      <Stack.Screen
+        name="index"
+        options={{
+          title: "Home",
+          headerTitleAlign: "center",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="login"
+        options={{ title: "Entrar", headerTitleAlign: "center" }}
+      />
     </Stack>
   );
 }
