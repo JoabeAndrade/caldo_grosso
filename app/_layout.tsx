@@ -19,6 +19,30 @@ export default function RootLayout() {
         name="login"
         options={{ title: "Entrar", headerTitleAlign: "center" }}
       />
+      <Stack.Screen
+        name="search"
+        options={{
+          title: "Entrar",
+          headerTitleAlign: "center",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="about"
+        options={{ title: "Sobre a loja", headerTitleAlign: "center" }}
+      />
+      <Stack.Screen
+        name="address"
+        options={{ title: "Endereço de entrega", headerTitleAlign: "center" }}
+      />
+      <Stack.Screen
+        name="address_cep"
+        options={{ title: "Endereço de entrega", headerTitleAlign: "center" }}
+      />
+      <Stack.Screen
+        name="detail_products_marmita"
+        options={{ title: "Detalhe do produto", headerTitleAlign: "center" }}
+      />
     </Stack>
   );
 }

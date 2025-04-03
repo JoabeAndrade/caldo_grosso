@@ -11,6 +11,7 @@ import {
   UIManager,
   LayoutChangeEvent,
 } from "react-native";
+import { Link } from "expo-router";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
@@ -215,7 +216,7 @@ export default function Screen() {
         style={styles.topSection}
         onLayout={(event: LayoutChangeEvent) => {
           const { height } = event.nativeEvent.layout;
-          setTopSectionHeight(height + 20); // Adiciona margem de segurança
+          setTopSectionHeight(height + 20);
         }}
       >
         <Image
@@ -230,39 +231,45 @@ export default function Screen() {
               style={styles.info_logo}
             />
             <View>
-              <TouchableOpacity>
-                <View style={styles.info_about_button}>
-                  <Text style={styles.info_button_about1}>
-                    Caldo Grosso Restaurante
-                  </Text>
-                  <AntDesign name="right" size={20} color="black" />
-                </View>
-                <View>
-                  <View style={styles.info_button_about2}>
-                    <MaterialCommunityIcons
-                      name="silverware-fork-knife"
-                      size={15}
-                      color="#7f929f"
-                    />
-                    <Text style={{ color: "#7f929f" }}>Bar & Restaurante</Text>
+              <Link href="/about" asChild>
+                <TouchableOpacity>
+                  <View style={styles.info_about_button}>
+                    <Text style={styles.info_button_about1}>
+                      Caldo Grosso Restaurante
+                    </Text>
+                    <AntDesign name="right" size={20} color="black" />
                   </View>
-                  <View style={styles.info_button_about3}>
-                    <AntDesign name="clockcircleo" size={18} color="red" />
-                    <Text style={{ color: "red" }}>Fechada</Text>
+                  <View>
+                    <View style={styles.info_button_about2}>
+                      <MaterialCommunityIcons
+                        name="silverware-fork-knife"
+                        size={15}
+                        color="#7f929f"
+                      />
+                      <Text style={{ color: "#7f929f" }}>
+                        Bar & Restaurante
+                      </Text>
+                    </View>
+                    <View style={styles.info_button_about3}>
+                      <AntDesign name="clockcircleo" size={18} color="red" />
+                      <Text style={{ color: "red" }}>Fechada</Text>
+                    </View>
                   </View>
-                </View>
-              </TouchableOpacity>
+                </TouchableOpacity>
+              </Link>
             </View>
           </View>
           <View>
-            <TouchableOpacity style={styles.info_description_button}>
-              <FontAwesome6 name="motorcycle" size={16} color="#7f8f9f" />
-              <Text
-                style={{ color: "#7f8f9f", textDecorationLine: "underline" }}
-              >
-                Tempo estimado 40 minutos
-              </Text>
-            </TouchableOpacity>
+            <Link href="/address" asChild>
+              <TouchableOpacity style={styles.info_description_button}>
+                <FontAwesome6 name="motorcycle" size={16} color="#7f8f9f" />
+                <Text
+                  style={{ color: "#7f8f9f", textDecorationLine: "underline" }}
+                >
+                  Tempo estimado 40 minutos
+                </Text>
+              </TouchableOpacity>
+            </Link>
             <View style={styles.info_description_text}>
               <FontAwesome name="shopping-basket" size={16} color="#7f8f9f" />
               <Text

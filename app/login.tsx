@@ -1,6 +1,7 @@
 import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import Footer from "../components/Footer";
 
 export default function Login() {
   return (
@@ -33,6 +34,7 @@ export default function Login() {
           </Text>
         </TouchableOpacity>
       </View>
+      <Footer />
     </View>
   );
 }
@@ -41,6 +43,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f3f5f7",
+    justifyContent: "space-between",
   },
   box_login: {
     width: "100%",

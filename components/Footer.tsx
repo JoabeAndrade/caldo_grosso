@@ -6,14 +6,18 @@ import { Link } from "expo-router";
 export default function Footer() {
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.footerIcons}>
-        <MaterialIcons name="menu-book" size={20} color="#dc5c20" />
-        <Text style={styles.footerText}>Cardápio</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.footerIcons}>
-        <Fontisto name="search" size={20} color="#dc5c20" />
-        <Text style={styles.footerText}>Busca</Text>
-      </TouchableOpacity>
+      <Link href="/" asChild>
+        <TouchableOpacity style={styles.footerIcons}>
+          <MaterialIcons name="menu-book" size={20} color="#dc5c20" />
+          <Text style={styles.footerText}>Cardápio</Text>
+        </TouchableOpacity>
+      </Link>
+      <Link href="/search" asChild>
+        <TouchableOpacity style={styles.footerIcons}>
+          <Fontisto name="search" size={20} color="#dc5c20" />
+          <Text style={styles.footerText}>Busca</Text>
+        </TouchableOpacity>
+      </Link>
       <Link href="/login" asChild>
         <TouchableOpacity style={styles.footerIcons}>
           <MaterialIcons name="login" size={20} color="#dc5c20" />
