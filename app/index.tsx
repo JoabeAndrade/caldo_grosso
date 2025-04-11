@@ -10,6 +10,7 @@ import {
   Platform,
   UIManager,
   LayoutChangeEvent,
+  ImageSourcePropType,
 } from "react-native";
 import { Link } from "expo-router";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -41,6 +42,7 @@ type OrderingItem = ScreenItemBase & {
   title: string;
   description: string;
   price: string;
+  image: ImageSourcePropType;
 };
 
 type ScreenDataItem = HeaderItem | OrderingItem;
@@ -51,7 +53,6 @@ type SectionIndices = {
   refrigerantes: number;
   sucos_e_chas: number;
   aguas: number;
-  chocolates: number;
 };
 
 type DropdownValue = keyof SectionIndices;
@@ -66,7 +67,6 @@ export default function Screen() {
     { label: "REFRIGERANTES", value: "refrigerantes" },
     { label: "SUCOS E CHÁS", value: "sucos_e_chas" },
     { label: "ÁGUAS", value: "aguas" },
-    { label: "CHOCOLATES", value: "chocolates" },
   ]);
 
   const [topSectionHeight, setTopSectionHeight] = useState(0);
@@ -77,7 +77,6 @@ export default function Screen() {
     refrigerantes: 6,
     sucos_e_chas: 9,
     aguas: 12,
-    chocolates: 15,
   };
 
   const data: ScreenDataItem[] = [
@@ -87,77 +86,60 @@ export default function Screen() {
       title: "MINI",
       description: "Arroz, feijão, duas misturas e um acompanhamento.",
       price: "R$ 21,00",
+      image: require("../assets/images/mini.jpg"),
     },
     {
       type: "ordering",
       title: "NORMAL",
       description: "Arroz, feijão, duas misturas e um acompanhamento.",
       price: "R$ 25,00",
+      image: require("../assets/images/normal.jpg"),
     },
     { type: "header", title: "SALADAS" },
     {
       type: "ordering",
-      title: "MINI",
-      description: "Arroz, feijão, duas misturas e um acompanhamento.",
+      title: "SALADA - MINI",
+      description: "Mix de folhas com legumes grelhados.",
       price: "R$ 21,00",
+      image: require("../assets/images/salada_mini.jpg"),
     },
     {
       type: "ordering",
-      title: "NORMAL",
-      description: "Arroz, feijão, duas misturas e um acompanhamento.",
+      title: "SALADA - NORMAL",
+      description: "Salada completa com proteína.",
       price: "R$ 25,00",
+      image: require("../assets/images/salada_normal.jpg"),
     },
     { type: "header", title: "REFRIGERANTES" },
     {
       type: "ordering",
-      title: "MINI",
-      description: "Arroz, feijão, duas misturas e um acompanhamento.",
-      price: "R$ 21,00",
+      title: "2 LITROS",
+      description: "A partir de",
+      price: "R$ 11,00",
+      image: require("../assets/images/refri.jpg"),
     },
     {
       type: "ordering",
-      title: "NORMAL",
-      description: "Arroz, feijão, duas misturas e um acompanhamento.",
-      price: "R$ 25,00",
+      title: "1 LITRO",
+      description: "A partir de",
+      price: "R$ 11,00",
+      image: require("../assets/images/refri.jpg"),
     },
     { type: "header", title: "SUCOS E CHÁS" },
     {
       type: "ordering",
-      title: "MINI",
-      description: "Arroz, feijão, duas misturas e um acompanhamento.",
-      price: "R$ 21,00",
-    },
-    {
-      type: "ordering",
-      title: "NORMAL",
-      description: "Arroz, feijão, duas misturas e um acompanhamento.",
-      price: "R$ 25,00",
+      title: "SUCO NATURAL DE LARANJA",
+      description: "500 ML",
+      price: "R$ 9,00",
+      image: require("../assets/images/suco_laranja.jpg"),
     },
     { type: "header", title: "ÁGUAS" },
     {
       type: "ordering",
-      title: "MINI",
-      description: "Arroz, feijão, duas misturas e um acompanhamento.",
-      price: "R$ 21,00",
-    },
-    {
-      type: "ordering",
-      title: "NORMAL",
-      description: "Arroz, feijão, duas misturas e um acompanhamento.",
-      price: "R$ 25,00",
-    },
-    { type: "header", title: "CHOCOLATES" },
-    {
-      type: "ordering",
-      title: "MINI",
-      description: "Arroz, feijão, duas misturas e um acompanhamento.",
-      price: "R$ 21,00",
-    },
-    {
-      type: "ordering",
-      title: "NORMAL",
-      description: "Arroz, feijão, duas misturas e um acompanhamento.",
-      price: "R$ 25,00",
+      title: "ÁGUA 500 ML",
+      description: "A partir de",
+      price: "R$ 4,00",
+      image: require("../assets/images/agua.jpg"),
     },
   ];
 
@@ -200,7 +182,7 @@ export default function Screen() {
             title={item.title}
             description={item.description}
             price={item.price}
-            imageSource={require("../assets/images/logo_v1672623700.png")}
+            imageSource={item.image}
           />
         );
 
@@ -308,7 +290,7 @@ export default function Screen() {
         keyExtractor={(item, index) => index.toString()}
         contentContainerStyle={[
           styles.scrollContent,
-          { paddingTop: topSectionHeight + 30 }, // Espaço extra para segurança
+          { paddingTop: topSectionHeight + 30 },
         ]}
         showsVerticalScrollIndicator={false}
         nestedScrollEnabled

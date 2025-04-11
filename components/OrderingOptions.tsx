@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   ImageSourcePropType,
+  ImageURISource,
 } from "react-native";
 
 interface OrdeProps {
@@ -23,66 +24,112 @@ export default function Orde({
   imageSource,
   onPress,
 }: OrdeProps) {
-  return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
-      {/* Conteúdo principal */}
-      <View style={styles.content}>
-        {/* Área de texto (lado esquerdo) */}
-        <View style={styles.leftSide}>
-          <Text style={styles.title}>{title}</Text>
-          <Text style={styles.description}>{description}</Text>
-          <Text style={styles.price}>{price}</Text>
-        </View>
+  // Fallback para imagem padrão
+  const defaultImage = require("../assets/images/normal.jpg");
 
-        {/* Área da imagem (lado direito) */}
-        <View style={styles.rightSide}>
-          <Image source={imageSource} style={styles.image} />
+  return (
+    <View style={styles.shadowContainer}>
+      <TouchableOpacity
+        style={styles.container}
+        onPress={onPress}
+        activeOpacity={0.7}
+      >
+        <View style={styles.content}>
+          <View style={styles.leftSide}>
+            <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
+              {title}
+            </Text>
+
+            <Text
+              style={styles.description}
+              numberOfLines={2}
+              ellipsizeMode="tail"
+            >
+              {description}
+            </Text>
+
+            <View style={styles.priceContainer}>
+              <Text style={styles.price}>{price}</Text>
+            </View>
+          </View>
+
+          <View style={styles.rightSide}>
+            <Image
+              source={imageSource || defaultImage}
+              style={styles.image}
+              resizeMode="center"
+            />
+          </View>
         </View>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  shadowContainer: {
+    borderRadius: 8,
+    marginHorizontal: 10,
+    marginVertical: 5,
+    backgroundColor: "#fff",
+    // Sombras para Android e iOS
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
   container: {
     borderRadius: 8,
     overflow: "hidden",
   },
   content: {
-    backgroundColor: "#fff",
     flexDirection: "row",
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#d9d9d9",
+    padding: 15,
   },
   leftSide: {
     flex: 1,
-    marginRight: 10,
+    marginRight: 15,
+    justifyContent: "space-between",
   },
   title: {
-    fontWeight: "bold",
+    fontWeight: "700",
     fontSize: 16,
-    marginBottom: 5,
-    color: "#333",
+    color: "#2d2d2d",
+    marginBottom: 8,
   },
   description: {
-    fontSize: 14,
-    color: "#555",
-    marginBottom: 10,
+    fontSize: 13,
+    color: "#666",
+    marginBottom: 12,
+    lineHeight: 18,
+  },
+  priceContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   price: {
-    fontWeight: "bold",
+    fontWeight: "700",
     fontSize: 16,
     color: "#000",
   },
+  orderButtonText: {
+    color: "#fff",
+    fontSize: 12,
+    fontWeight: "600",
+  },
   rightSide: {
-    width: 80,
-    height: 80,
+    width: 100,
+    height: 100,
+    borderRadius: 8,
+    backgroundColor: "#f8f9fa",
+    justifyContent: "center",
+    alignItems: "center",
   },
   image: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 8,
-    resizeMode: "cover",
+    width: "80%",
+    height: "80%",
+    borderRadius: 4,
   },
 });
