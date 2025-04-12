@@ -1,15 +1,17 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import AddressCard from "../components/AddressCard";
+import { useLocalSearchParams } from "expo-router";
 import { Link } from "expo-router";
 
 export default function Address() {
+  const params = useLocalSearchParams();
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
         Deslize um endereço (direita para editar ou esquerda para excluir) ou
         adicione um novo endereço.
       </Text>
-      <AddressCard />
+      <AddressCard address={params} />
       <Link href="/address_cep" asChild>
         <TouchableOpacity style={styles.button_address}>
           <Text style={{ color: "#dc5c20" }}>Adicionar novo endereço</Text>

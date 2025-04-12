@@ -1,15 +1,36 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-// Caso esteja usando Expo, você pode importar assim:
 import { Ionicons } from "@expo/vector-icons";
 
-export default function AddressCard() {
-  // Este estado controla se o endereço está selecionado ou não
+interface AddressCardProps {
+  address: {
+    cep?: string;
+    street?: string;
+    number?: string;
+    complement?: string;
+    reference?: string;
+    district?: string;
+    city?: string;
+    uf?: string;
+  };
+}
+
+export default function AddressCard({ address }: AddressCardProps) {
   const [selected, setSelected] = useState(false);
+  const formatAddress = () => {
+    const parts = [
+      address.street && `${address.street}, ${address.number || ""}`.trim(),
+      address.complement,
+      address.district,
+      address.city && `${address.city}/${address.uf}`,
+      address.reference && `Perto de: ${address.reference}`,
+    ].filter(Boolean);
+
+    return parts.join(", ");
+  };
 
   return (
     <View style={styles.container}>
-      {/* Ícone de localização */}
       <Ionicons
         name="location-sharp"
         size={24}
@@ -19,9 +40,12 @@ export default function AddressCard() {
 
       {/* Área de texto */}
       <View style={styles.textContainer}>
-        <Text style={styles.title}>Rua Crestins, 221</Text>
+        <Text style={styles.title}>
+          {address.street || "Endereço não informado"}
+        </Text>
         <Text style={styles.subtitle}>
-          CEP: 45265-000, Casa, Centro, Barra Preto/BA, Perto ao cemitério
+          {address.cep && `CEP: ${address.cep}`}
+          {formatAddress()}
         </Text>
       </View>
 
