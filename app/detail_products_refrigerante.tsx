@@ -3,53 +3,19 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, FlatList, ScrollView, 
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams } from "expo-router";
 import { useRouter } from 'expo-router';
-type OptionMap = {
-  [key: string]: number;
-};
-
-const misturasList = [
-  'Strogonoff de carne',
-  'Cupim assado',
-  'Costelinha de porco assada',
-  'Carne assada',
-  'Linguiça toscana assada',
-  'Filé de frango a milanesa',
-  'Medalhão de frango com bacon'
-];
-
 const acompanhamentosList = [
-  'Batata frita',
-  'Farofa',
-  'Creme de milho',
-  'Lasanha',
-  'Legumes:( brocolis, beterraba, vagem com cenoura)',
-  'Sem acompanhamento'
+  { nome: 'Coca-Cola', preco: 'R$ 16,00' },
+  { nome: 'Fanta Laranja', preco: 'R$ 14,00' },
+  { nome: 'Sprite', preco: 'R$ 14,00' },
+  { nome: 'Sukita Laranja', preco: 'R$ 11,00' },
 ];
 
-
-export default function DetalheMarmita() {
+export default function DetalheRefrigerante() {
   const router = useRouter();
   const params = useLocalSearchParams();
   const { title, description, price } = params;
   const [selectedAcompanhamento, setSelectedAcompanhamento] = useState<string | null>(null);
   const [observacoes, setObservacoes] = useState('');
-  const [misturasOptions, setmisturasOptions] = useState<OptionMap>(
-    misturasList.reduce((acc, item) => ({ ...acc, [item]: 0 }), {})
-  );
-
-  const handleIncrement = (item: string) => {
-    const totalSelected = Object.values(misturasOptions).reduce((acc, curr) => acc + curr, 0);
-    if (totalSelected < 2) {
-      setmisturasOptions(prev => ({ ...prev, [item]: prev[item] + 1 }));
-    }
-  };
-
-  const handleDecrement = (item: string) => {
-    if (misturasOptions[item] > 0) {
-      setmisturasOptions(prev => ({ ...prev, [item]: prev[item] - 1 }));
-    }
-  };
-
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -63,11 +29,7 @@ export default function DetalheMarmita() {
       </View>
       <Image
         style={styles.image}
-        source={
-          title == "MINI"
-            ? require('../assets/images/mini.jpg')
-            : require('../assets/images/normal.jpg')
-        }
+        source={require("../assets/images/refri.jpg")}
       />
 
       <View style={styles.infoContainer}>
@@ -78,54 +40,7 @@ export default function DetalheMarmita() {
       <View style={styles.section}>
         <View style={styles.headerRow}>
           <View>
-            <Text style={styles.sectionTitle}>Escolha duas misturas</Text>
-            <Text style={styles.subText}>Escolha 2 opções</Text>
-          </View>
-          <View style={styles.badge}>
-            {Object.values(misturasOptions).reduce((acc, curr) => acc + curr, 0) > 0 ? (
-              <Ionicons name="checkmark-circle" size={20} color="green" />
-            ) : (
-              <Text style={styles.badgeText}>Obrigatório</Text>
-            )}
-          </View>
-        </View>
-
-        {misturasList.map(item => (
-          <View key={item} style={styles.optionContainer}>
-            <Text style={styles.optionText}>{item}</Text>
-            <View style={styles.counter}>
-              <TouchableOpacity onPress={() => handleDecrement(item)}>
-                <Text style={styles.counterBtn}>−</Text>
-              </TouchableOpacity>
-              <Text style={styles.counterValue}>{misturasOptions[item]}</Text>
-              <TouchableOpacity
-                onPress={() => {
-                  const totalSelected = Object.values(misturasOptions).reduce((acc, curr) => acc + curr, 0);
-                  if (totalSelected >= 2) {
-                    Alert.alert('Atenção', 'Limite de 2 misturas atingido!', [{ text: 'OK' }]);
-                  } else {
-                    handleIncrement(item);
-                  }
-                }}
-              >
-                <Text
-                  style={[
-                    styles.counterBtn,
-                    {
-                      color: Object.values(misturasOptions).reduce((acc, curr) => acc + curr, 0) >= 2 ? '#ccc' : '#ef4444'
-                    }
-                  ]}
-                >
-                  +
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        ))}
-        <View style={styles.headerRow}>
-          <View>
-            <Text style={styles.sectionTitle}>Escolha um acompanhamento</Text>
-            <Text style={styles.subText}>Escolha 1 opção</Text>
+            <Text style={styles.sectionTitle}>Escolha 1 opção</Text>
           </View>
           <View style={styles.badge}>
             {selectedAcompanhamento ? (
@@ -135,15 +50,23 @@ export default function DetalheMarmita() {
             )}
           </View>
         </View>
-
         {acompanhamentosList.map((item, index) => (
-          <TouchableOpacity key={index} style={styles.option} onPress={() => setSelectedAcompanhamento(item)}>
-            <Text style={styles.optionText}>{item}</Text>
+          <TouchableOpacity
+            key={index}
+            style={styles.option}
+            onPress={() => setSelectedAcompanhamento(item.nome)}
+          >
+            <View style={{ flex: 1 }}>
+              <Text style={styles.optionText}>{item.nome}</Text>
+              <Text style={styles.price}>{item.preco}</Text>
+            </View>
             <View style={styles.radioCircle}>
-              {selectedAcompanhamento === item && <View style={styles.selectedDot} />}
+              {selectedAcompanhamento === item.nome && <View style={styles.selectedDot} />}
             </View>
           </TouchableOpacity>
         ))}
+
+
         <Text style={styles.sectionTitle}>Observações</Text>
         <TextInput
           style={styles.textArea}
@@ -209,7 +132,7 @@ const styles = StyleSheet.create({
   },
   price: {
     marginTop: 10,
-    fontSize: 16,
+    fontSize: 12,
     fontWeight: 'bold',
     color: '#000',
   },
@@ -247,7 +170,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   optionText: {
-    fontSize: 14,
+    fontSize: 16,
   },
   counter: {
     flexDirection: 'row',

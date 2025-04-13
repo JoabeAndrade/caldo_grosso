@@ -10,7 +10,8 @@ import {
   Platform,
   UIManager,
   LayoutChangeEvent,
-  ImageSourcePropType,
+  ImageURISource,
+  ImageRequireSource,
 } from "react-native";
 import { Link } from "expo-router";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -21,7 +22,9 @@ import { useState, useRef, useEffect } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
 import OrderingOptions from "../components/OrderingOptions";
 import Footer from "../components/Footer";
+import { useRouter } from "expo-router";
 
+export type ImageSourcePropType = ImageURISource | ImageURISource[] | ImageRequireSource;
 if (Platform.OS === "android") {
   if (UIManager.setLayoutAnimationEnabledExperimental) {
     UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -58,6 +61,7 @@ type SectionIndices = {
 type DropdownValue = keyof SectionIndices;
 
 export default function Screen() {
+  const router = useRouter();
   const flatListRef = useRef<FlatList<ScreenDataItem>>(null);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<DropdownValue | null>(null);
@@ -176,15 +180,92 @@ export default function Screen() {
           </View>
         );
 
-      case "ordering":
-        return (
-          <OrderingOptions
-            title={item.title}
-            description={item.description}
-            price={item.price}
-            imageSource={item.image}
-          />
-        );
+        case "ordering":
+          return (
+            <OrderingOptions
+              title={item.title}
+              description={item.description}
+              price={item.price}
+              imageSource={item.image}
+              onPress={() => {
+                const itemIndex = data.findIndex((d) => d.title === item.title && d.type === "ordering");
+    
+                let category = "";
+                for (let i = itemIndex; i >= 0; i--) {
+                  if (data[i].type === "header") {
+                    category = data[i].title;
+                    break;
+                  }
+                }
+
+                switch (category) {
+                  case "MARMITEX":
+                    router.push({
+                      pathname: "/detail_products_marmita",
+                      params: {
+                        title: item.title,
+                        description: item.description,
+                        price: item.price,
+                        image: item.image.toString(),
+                      },
+                    });
+                    break;
+              
+                  case "SALADAS":
+                    router.push({
+                      pathname: "/detail_products_salada",
+                      params: {
+                        title: item.title,
+                        description: item.description,
+                        price: item.price,
+                        image: item.image.toString(),
+                      },
+                    });
+                    break;
+              
+                  case "REFRIGERANTES":
+                    router.push({
+                      pathname: "/detail_products_refrigerante",
+                      params: {
+                        title: item.title,
+                        description: item.description,
+                        price: item.price,
+                        image: item.image.toString(),
+                      },
+                    });
+                    break;
+              
+                  case "SUCOS E CHÁS":
+                    router.push({
+                      pathname: "/detail_products_sucoCha",
+                      params: {
+                        title: item.title,
+                        description: item.description,
+                        price: item.price,
+                        image: item.image.toString(),
+                      },
+                    });
+                    break;
+
+                  case "ÁGUAS":
+                    router.push({
+                      pathname: "/detail_products_agua",
+                      params: {
+                        title: item.title,
+                        description: item.description,
+                        price: item.price,
+                        image: item.image.toString(),
+                      },
+                    });
+                    break;
+              
+                  default:
+                    console.warn("Categoria não reconhecida:", category);
+                }
+              }}
+              
+            />
+           );
 
       default:
         const _exhaustiveCheck: never = item;
@@ -303,6 +384,7 @@ export default function Screen() {
           }, 100);
         }}
       />
+
       <Footer />
     </SafeAreaView>
   );
