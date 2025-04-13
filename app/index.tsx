@@ -24,7 +24,10 @@ import OrderingOptions from "../components/OrderingOptions";
 import Footer from "../components/Footer";
 import { useRouter } from "expo-router";
 
-export type ImageSourcePropType = ImageURISource | ImageURISource[] | ImageRequireSource;
+export type ImageSourcePropType =
+  | ImageURISource
+  | ImageURISource[]
+  | ImageRequireSource;
 if (Platform.OS === "android") {
   if (UIManager.setLayoutAnimationEnabledExperimental) {
     UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -180,92 +183,93 @@ export default function Screen() {
           </View>
         );
 
-        case "ordering":
-          return (
-            <OrderingOptions
-              title={item.title}
-              description={item.description}
-              price={item.price}
-              imageSource={item.image}
-              onPress={() => {
-                const itemIndex = data.findIndex((d) => d.title === item.title && d.type === "ordering");
-    
-                let category = "";
-                for (let i = itemIndex; i >= 0; i--) {
-                  if (data[i].type === "header") {
-                    category = data[i].title;
-                    break;
-                  }
-                }
+      case "ordering":
+        return (
+          <OrderingOptions
+            title={item.title}
+            description={item.description}
+            price={item.price}
+            imageSource={item.image}
+            onPress={() => {
+              const itemIndex = data.findIndex(
+                (d) => d.title === item.title && d.type === "ordering"
+              );
 
-                switch (category) {
-                  case "MARMITEX":
-                    router.push({
-                      pathname: "/detail_products_marmita",
-                      params: {
-                        title: item.title,
-                        description: item.description,
-                        price: item.price,
-                        image: item.image.toString(),
-                      },
-                    });
-                    break;
-              
-                  case "SALADAS":
-                    router.push({
-                      pathname: "/detail_products_salada",
-                      params: {
-                        title: item.title,
-                        description: item.description,
-                        price: item.price,
-                        image: item.image.toString(),
-                      },
-                    });
-                    break;
-              
-                  case "REFRIGERANTES":
-                    router.push({
-                      pathname: "/detail_products_refrigerante",
-                      params: {
-                        title: item.title,
-                        description: item.description,
-                        price: item.price,
-                        image: item.image.toString(),
-                      },
-                    });
-                    break;
-              
-                  case "SUCOS E CHÁS":
-                    router.push({
-                      pathname: "/detail_products_sucoCha",
-                      params: {
-                        title: item.title,
-                        description: item.description,
-                        price: item.price,
-                        image: item.image.toString(),
-                      },
-                    });
-                    break;
-
-                  case "ÁGUAS":
-                    router.push({
-                      pathname: "/detail_products_agua",
-                      params: {
-                        title: item.title,
-                        description: item.description,
-                        price: item.price,
-                        image: item.image.toString(),
-                      },
-                    });
-                    break;
-              
-                  default:
-                    console.warn("Categoria não reconhecida:", category);
+              let category = "";
+              for (let i = itemIndex; i >= 0; i--) {
+                if (data[i].type === "header") {
+                  category = data[i].title;
+                  break;
                 }
-              }}
-              
-            />
-           );
+              }
+
+              switch (category) {
+                case "MARMITEX":
+                  router.push({
+                    pathname: "/detail_products_marmita",
+                    params: {
+                      title: item.title,
+                      description: item.description,
+                      price: item.price,
+                      image: item.image.toString(),
+                    },
+                  });
+                  break;
+
+                case "SALADAS":
+                  router.push({
+                    pathname: "/detail_products_salada",
+                    params: {
+                      title: item.title,
+                      description: item.description,
+                      price: item.price,
+                      image: item.image.toString(),
+                    },
+                  });
+                  break;
+
+                case "REFRIGERANTES":
+                  router.push({
+                    pathname: "/detail_products_refrigerante",
+                    params: {
+                      title: item.title,
+                      description: item.description,
+                      price: item.price,
+                      image: item.image.toString(),
+                    },
+                  });
+                  break;
+
+                case "SUCOS E CHÁS":
+                  router.push({
+                    pathname: "/detail_products_sucoCha",
+                    params: {
+                      title: item.title,
+                      description: item.description,
+                      price: item.price,
+                      image: item.image.toString(),
+                    },
+                  });
+                  break;
+
+                case "ÁGUAS":
+                  router.push({
+                    pathname: "/detail_products_agua",
+                    params: {
+                      title: item.title,
+                      description: item.description,
+                      price: item.price,
+                      image: item.image.toString(),
+                    },
+                  });
+                  break;
+
+                default:
+                  console.warn("Categoria não reconhecida:", category);
+              }
+            }}
+          />
+        );
 
       default:
         const _exhaustiveCheck: never = item;
@@ -322,25 +326,42 @@ export default function Screen() {
               </Link>
             </View>
           </View>
-          <View>
-            <Link href="/address" asChild>
-              <TouchableOpacity style={styles.info_description_button}>
-                <FontAwesome6 name="motorcycle" size={16} color="#7f8f9f" />
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <View>
+              <Link href="/address" asChild>
+                <TouchableOpacity style={styles.info_description_button}>
+                  <FontAwesome6 name="motorcycle" size={16} color="#7f8f9f" />
+                  <Text
+                    style={{
+                      color: "#7f8f9f",
+                      textDecorationLine: "underline",
+                    }}
+                  >
+                    Tempo estimado 40 minutos
+                  </Text>
+                </TouchableOpacity>
+              </Link>
+
+              <View style={styles.info_description_text}>
+                <FontAwesome name="shopping-basket" size={16} color="#7f8f9f" />
                 <Text
                   style={{ color: "#7f8f9f", textDecorationLine: "underline" }}
                 >
-                  Tempo estimado 40 minutos
+                  Pedido mínimo: R$ 20,00
                 </Text>
+              </View>
+            </View>
+            <Link href="/carrinho" asChild>
+              <TouchableOpacity>
+                <AntDesign name="shoppingcart" size={30} color="black" />
               </TouchableOpacity>
             </Link>
-            <View style={styles.info_description_text}>
-              <FontAwesome name="shopping-basket" size={16} color="#7f8f9f" />
-              <Text
-                style={{ color: "#7f8f9f", textDecorationLine: "underline" }}
-              >
-                Pedido mínimo: R$ 20,00
-              </Text>
-            </View>
           </View>
         </View>
 

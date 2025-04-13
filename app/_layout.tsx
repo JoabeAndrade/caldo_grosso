@@ -29,7 +29,7 @@ export default function RootLayout() {
       />
       <Stack.Screen
         name="about"
-        options={{ title: "Sobre a loja", headerTitleAlign: "center"}}
+        options={{ title: "Sobre a loja", headerTitleAlign: "center" }}
       />
       <Stack.Screen
         name="address"
@@ -41,24 +41,48 @@ export default function RootLayout() {
       />
       <Stack.Screen
         name="detail_products_marmita"
-        options={{ title: "Detalhe do produto", headerTitleAlign: "center",  headerShown: false,}}
+        options={{
+          title: "Detalhe do produto",
+          headerTitleAlign: "center",
+          headerShown: false,
+        }}
       />
       <Stack.Screen
         name="detail_products_salada"
-        options={{ title: "Detalhe do produto", headerTitleAlign: "center",  headerShown: false,}}
-      />
-       <Stack.Screen
-        name="detail_products_refrigerante"
-        options={{ title: "Detalhe do produto", headerTitleAlign: "center",  headerShown: false,}}
-      />
-       <Stack.Screen
-        name="detail_products_agua"
-        options={{ title: "Detalhe do produto", headerTitleAlign: "center",  headerShown: false,}}
+        options={{
+          title: "Detalhe do produto",
+          headerTitleAlign: "center",
+          headerShown: false,
+        }}
       />
       <Stack.Screen
-      name="detail_products_sucoCha"
-      options={{ title: "Detalhe do produto", headerTitleAlign: "center",  headerShown: false,}}
-    />
+        name="detail_products_refrigerante"
+        options={{
+          title: "Detalhe do produto",
+          headerTitleAlign: "center",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="detail_products_agua"
+        options={{
+          title: "Detalhe do produto",
+          headerTitleAlign: "center",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="detail_products_sucoCha"
+        options={{
+          title: "Detalhe do produto",
+          headerTitleAlign: "center",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="carrinho"
+        options={{ title: "Meus Pedidos", headerTitleAlign: "center" }}
+      />
     </Stack>
   );
 }

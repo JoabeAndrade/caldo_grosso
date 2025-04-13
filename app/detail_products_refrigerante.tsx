@@ -1,21 +1,34 @@
-import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, FlatList, ScrollView, TextInput, Alert } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+  ScrollView,
+  TextInput,
+  Alert,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams } from "expo-router";
-import { useRouter } from 'expo-router';
+import { useRouter } from "expo-router";
 const acompanhamentosList = [
-  { nome: 'Coca-Cola', preco: 'R$ 16,00' },
-  { nome: 'Fanta Laranja', preco: 'R$ 14,00' },
-  { nome: 'Sprite', preco: 'R$ 14,00' },
-  { nome: 'Sukita Laranja', preco: 'R$ 11,00' },
+  { nome: "Coca-Cola", preco: "R$ 16,00" },
+  { nome: "Fanta Laranja", preco: "R$ 14,00" },
+  { nome: "Sprite", preco: "R$ 14,00" },
+  { nome: "Sukita Laranja", preco: "R$ 11,00" },
 ];
 
 export default function DetalheRefrigerante() {
+  const [quantity, setQuantity] = useState(1);
   const router = useRouter();
   const params = useLocalSearchParams();
   const { title, description, price } = params;
-  const [selectedAcompanhamento, setSelectedAcompanhamento] = useState<string | null>(null);
-  const [observacoes, setObservacoes] = useState('');
+  const [selectedAcompanhamento, setSelectedAcompanhamento] = useState<
+    string | null
+  >(null);
+  const [observacoes, setObservacoes] = useState("");
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -61,11 +74,12 @@ export default function DetalheRefrigerante() {
               <Text style={styles.price}>{item.preco}</Text>
             </View>
             <View style={styles.radioCircle}>
-              {selectedAcompanhamento === item.nome && <View style={styles.selectedDot} />}
+              {selectedAcompanhamento === item.nome && (
+                <View style={styles.selectedDot} />
+              )}
             </View>
           </TouchableOpacity>
         ))}
-
 
         <Text style={styles.sectionTitle}>Observações</Text>
         <TextInput
@@ -78,13 +92,45 @@ export default function DetalheRefrigerante() {
         />
         <Text style={styles.charCounter}>{observacoes.length}/180</Text>
         <Text style={styles.infoText}>
-          Converse diretamente com o estabelecimento caso queira modificar algum item.{" "}
-          Neste campo não são aceitas modificações que podem gerar cobrança adicional.
+          Converse diretamente com o estabelecimento caso queira modificar algum
+          item. Neste campo não são aceitas modificações que podem gerar
+          cobrança adicional.
         </Text>
       </View>
+      <View style={styles.footer}>
+        <View style={styles.quantityContainer}>
+          <TouchableOpacity
+            onPress={() => setQuantity(Math.max(1, quantity - 1))}
+          >
+            <Ionicons name="remove-circle-outline" size={32} color="#ef4444" />
+          </TouchableOpacity>
+          <Text style={styles.quantityText}>{quantity}</Text>
+          <TouchableOpacity onPress={() => setQuantity(quantity + 1)}>
+            <Ionicons name="add-circle-outline" size={32} color="#ef4444" />
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={() => {
+            if (!selectedAcompanhamento) {
+              Alert.alert("Atenção", "Selecione uma opção obrigatória");
+              return;
+            }
+            Alert.alert(
+              "Sucesso",
+              `${quantity} item(s) adicionado(s) ao carrinho!`
+            );
+          }}
+        >
+          <Text style={styles.addButtonText}>Adicionar ao Carrinho</Text>
+        </TouchableOpacity>
+      </View>
+
       <View style={styles.closedContainer}>
         <Text style={styles.closedText}>Fechado no momento!</Text>
-        <Text style={styles.subText}>No momento, não estamos aceitando novos pedidos.</Text>
+        <Text style={styles.subText}>
+          No momento, não estamos aceitando novos pedidos.
+        </Text>
       </View>
     </ScrollView>
   );
@@ -93,29 +139,29 @@ export default function DetalheRefrigerante() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   header: {
     height: 50,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 16,
-    position: 'relative',
+    position: "relative",
   },
   titleWrapper: {
-    position: 'absolute',
+    position: "absolute",
     left: 0,
     right: 0,
-    alignItems: 'center',
+    alignItems: "center",
   },
   title: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   image: {
-    width: '90%',
+    width: "90%",
     height: 200,
-    alignSelf: 'center',
+    alignSelf: "center",
     borderRadius: 10,
   },
   infoContainer: {
@@ -124,102 +170,102 @@ const styles = StyleSheet.create({
   },
   productName: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   description: {
-    color: '#555',
+    color: "#555",
     marginTop: 4,
   },
   price: {
     marginTop: 10,
     fontSize: 12,
-    fontWeight: 'bold',
-    color: '#000',
+    fontWeight: "bold",
+    color: "#000",
   },
   section: {
-    backgroundColor: '#f3f4f6',
+    backgroundColor: "#f3f4f6",
     marginTop: 20,
     padding: 15,
     borderTopWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: "#e5e7eb",
   },
   sectionTitle: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 16,
     marginTop: 30,
   },
   subText: {
     fontSize: 12,
-    color: '#666',
+    color: "#666",
     marginBottom: 10,
   },
   required: {
-    color: '#fff',
-    backgroundColor: '#555',
+    color: "#fff",
+    backgroundColor: "#555",
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: 8,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   optionContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     paddingVertical: 10,
-    borderBottomColor: '#ddd',
+    borderBottomColor: "#ddd",
     borderBottomWidth: 1,
   },
   optionText: {
     fontSize: 16,
   },
   counter: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   counterBtn: {
     fontSize: 20,
     paddingHorizontal: 10,
-    color: '#ef4444',
-    fontWeight: 'bold',
+    color: "#ef4444",
+    fontWeight: "bold",
   },
   counterValue: {
     fontSize: 16,
     minWidth: 20,
-    textAlign: 'center',
-    color: '#000',
+    textAlign: "center",
+    color: "#000",
   },
   closedContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     padding: 20,
   },
   closedText: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 14,
-    color: '#333',
+    color: "#333",
   },
   headerRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 10,
   },
   badge: {
-    backgroundColor: '#d1d5db',
+    backgroundColor: "#d1d5db",
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 12,
   },
   badgeText: {
     fontSize: 12,
-    color: '#4b5563',
-    fontWeight: 'bold',
+    color: "#4b5563",
+    fontWeight: "bold",
   },
   option: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingVertical: 14,
-    borderBottomColor: '#ddd',
+    borderBottomColor: "#ddd",
     borderBottomWidth: 1,
   },
   radioCircle: {
@@ -227,34 +273,62 @@ const styles = StyleSheet.create({
     width: 20,
     borderRadius: 10,
     borderWidth: 2,
-    borderColor: '#ef4444',
-    alignItems: 'center',
-    justifyContent: 'center',
+    borderColor: "#ef4444",
+    alignItems: "center",
+    justifyContent: "center",
   },
   selectedDot: {
     height: 10,
     width: 10,
     borderRadius: 5,
-    backgroundColor: '#ef4444',
+    backgroundColor: "#ef4444",
   },
   textArea: {
     height: 80,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 8,
     padding: 10,
     marginTop: 10,
-    textAlignVertical: 'top',
+    textAlignVertical: "top",
   },
   charCounter: {
     fontSize: 12,
-    color: '#666',
-    textAlign: 'right',
+    color: "#666",
+    textAlign: "right",
     marginTop: 4,
   },
   infoText: {
     fontSize: 12,
-    color: '#666',
+    color: "#666",
     marginTop: 8,
+  },
+  footer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 16,
+    backgroundColor: "#fff",
+    borderTopWidth: 1,
+    borderColor: "#e5e7eb",
+  },
+  quantityContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  quantityText: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  addButton: {
+    backgroundColor: "#ef4444",
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+  },
+  addButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
   },
 });
