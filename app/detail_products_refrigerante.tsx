@@ -13,6 +13,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams } from "expo-router";
 import { useRouter } from "expo-router";
+import { useCartStore } from "../store/cartStore";
 const acompanhamentosList = [
   { nome: "Coca-Cola", preco: "R$ 16,00" },
   { nome: "Fanta Laranja", preco: "R$ 14,00" },
@@ -116,6 +117,17 @@ export default function DetalheRefrigerante() {
               Alert.alert("Atenção", "Selecione uma opção obrigatória");
               return;
             }
+
+            useCartStore.getState().addItem({
+              name: title as string,
+              price: Number(
+                (price as string).replace("R$ ", "").replace(",", ".")
+              ),
+              quantity: quantity,
+              observations: observacoes,
+              options: [selectedAcompanhamento],
+            });
+
             Alert.alert(
               "Sucesso",
               `${quantity} item(s) adicionado(s) ao carrinho!`

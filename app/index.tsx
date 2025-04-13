@@ -23,6 +23,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 import OrderingOptions from "../components/OrderingOptions";
 import Footer from "../components/Footer";
 import { useRouter } from "expo-router";
+import { useCartStore } from "../store/cartStore";
 
 export type ImageSourcePropType =
   | ImageURISource
@@ -75,6 +76,7 @@ export default function Screen() {
     { label: "SUCOS E CHÁS", value: "sucos_e_chas" },
     { label: "ÁGUAS", value: "aguas" },
   ]);
+  const { cartItems } = useCartStore();
 
   const [topSectionHeight, setTopSectionHeight] = useState(0);
 
@@ -358,8 +360,13 @@ export default function Screen() {
               </View>
             </View>
             <Link href="/carrinho" asChild>
-              <TouchableOpacity>
+              <TouchableOpacity style={{ position: "relative" }}>
                 <AntDesign name="shoppingcart" size={30} color="black" />
+                {cartItems.length > 0 && (
+                  <View style={styles.badge}>
+                    <Text style={styles.badgeText}>{cartItems.length}</Text>
+                  </View>
+                )}
               </TouchableOpacity>
             </Link>
           </View>
@@ -525,5 +532,21 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 18,
     color: "#333",
+  },
+  badge: {
+    position: "absolute",
+    right: -8,
+    top: -4,
+    backgroundColor: "red",
+    borderRadius: 10,
+    width: 20,
+    height: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  badgeText: {
+    color: "white",
+    fontSize: 12,
+    fontWeight: "bold",
   },
 });

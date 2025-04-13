@@ -13,6 +13,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams } from "expo-router";
 import { useRouter } from "expo-router";
+import { useCartStore } from "../store/cartStore";
 type OptionMap = {
   [key: string]: number;
 };
@@ -218,6 +219,22 @@ export default function DetalheMarmita() {
               Alert.alert("Atenção", "Selecione 2 misturas e 1 acompanhamento");
               return;
             }
+
+            useCartStore.getState().addItem({
+              name: title as string,
+              price: Number(
+                (price as string).replace("R$ ", "").replace(",", ".")
+              ),
+              quantity: quantity,
+              observations: observacoes,
+              options: [
+                ...Object.entries(misturasOptions)
+                  .filter(([_, count]) => count > 0)
+                  .map(([name]) => name),
+                selectedAcompanhamento,
+              ],
+            });
+
             Alert.alert(
               "Sucesso",
               `${quantity} marmita(s) adicionada(s) ao carrinho!`

@@ -13,6 +13,7 @@ import {
 import { useLocalSearchParams } from "expo-router";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { useCartStore } from "../store/cartStore";
 export default function DetalheSucoCha() {
   const [quantity, setQuantity] = useState(1);
   const [selectedAcompanhamento, setSelectedAcompanhamento] = useState<
@@ -77,10 +78,15 @@ export default function DetalheSucoCha() {
         <TouchableOpacity
           style={styles.addButton}
           onPress={() => {
-            if (!selectedAcompanhamento) {
-              Alert.alert("Atenção", "Selecione uma opção obrigatória");
-              return;
-            }
+            useCartStore.getState().addItem({
+              name: title as string,
+              price: Number(
+                (price as string).replace("R$ ", "").replace(",", ".")
+              ),
+              quantity: quantity,
+              observations: observacoes,
+            });
+
             Alert.alert(
               "Sucesso",
               `${quantity} item(s) adicionado(s) ao carrinho!`

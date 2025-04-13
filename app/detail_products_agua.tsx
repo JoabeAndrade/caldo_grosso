@@ -13,6 +13,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams } from "expo-router";
 import { useRouter } from "expo-router";
+import { useCartStore } from "../store/cartStore";
 
 const acompanhamentosList = [
   { nome: "Sem gás", preco: "R$ 4,00" },
@@ -116,10 +117,16 @@ export default function DetalheAgua() {
         <TouchableOpacity
           style={styles.addButton}
           onPress={() => {
-            if (!selectedAcompanhamento) {
-              Alert.alert("Atenção", "Selecione uma opção obrigatória");
-              return;
-            }
+            useCartStore.getState().addItem({
+              name: title as string,
+              price: Number(
+                (price as string) // Forçar a tipagem para string
+                  .replace("R$ ", "")
+                  .replace(",", ".")
+              ),
+              quantity: quantity,
+              observations: observacoes,
+            });
             Alert.alert(
               "Sucesso",
               `${quantity} item(s) adicionado(s) ao carrinho!`
