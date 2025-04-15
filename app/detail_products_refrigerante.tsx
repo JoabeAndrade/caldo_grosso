@@ -31,8 +31,8 @@ export default function DetalheRefrigerante() {
   >(null);
   const [observacoes, setObservacoes] = useState("");
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
+    <View style = {{flex : 1, backgroundColor: "#fff"}}>
+        <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="arrow-back-outline" size={24} color="black" />
         </TouchableOpacity>
@@ -41,6 +41,7 @@ export default function DetalheRefrigerante() {
           <Text style={styles.title}>Detalhe do produto</Text>
         </View>
       </View>
+    <ScrollView style={styles.container}>
       <Image
         style={styles.image}
         source={require("../assets/images/refri.jpg")}
@@ -145,12 +146,12 @@ export default function DetalheRefrigerante() {
         </Text>
       </View>
     </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "#fff",
   },
   header: {

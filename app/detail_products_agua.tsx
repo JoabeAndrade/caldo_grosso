@@ -31,7 +31,7 @@ export default function DetalheAgua() {
   const [observacoes, setObservacoes] = useState("");
 
   return (
-    <ScrollView style={styles.container}>
+    <View style = {{flex : 1, backgroundColor: "#fff"}}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="arrow-back-outline" size={24} color="black" />
@@ -42,6 +42,7 @@ export default function DetalheAgua() {
         </View>
       </View>
 
+    <ScrollView style={styles.container}>
       <Image
         style={styles.image}
         source={require("../assets/images/agua.jpg")}
@@ -144,12 +145,12 @@ export default function DetalheAgua() {
         </Text>
       </View>
     </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "#fff",
   },
   header: {

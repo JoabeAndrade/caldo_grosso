@@ -67,8 +67,8 @@ export default function DetalheMarmita() {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
+  <View style = {{flex : 1, backgroundColor: "#fff"}}>
+    <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="arrow-back-outline" size={24} color="black" />
         </TouchableOpacity>
@@ -77,6 +77,7 @@ export default function DetalheMarmita() {
           <Text style={styles.title}>Detalhe do produto</Text>
         </View>
       </View>
+    <ScrollView style={styles.container}>
       <Image
         style={styles.image}
         source={
@@ -101,7 +102,7 @@ export default function DetalheMarmita() {
             {Object.values(misturasOptions).reduce(
               (acc, curr) => acc + curr,
               0
-            ) > 0 ? (
+            ) === 2 ? (
               <Ionicons name="checkmark-circle" size={20} color="green" />
             ) : (
               <Text style={styles.badgeText}>Obrigatório</Text>
@@ -251,12 +252,12 @@ export default function DetalheMarmita() {
         </Text>
       </View>
     </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "#fff",
   },
   header: {

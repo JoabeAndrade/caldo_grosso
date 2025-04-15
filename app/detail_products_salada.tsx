@@ -89,7 +89,7 @@ export default function DetalheSalada() {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <View style = {{flex : 1, backgroundColor: "#fff"}}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="arrow-back-outline" size={24} color="black" />
@@ -99,6 +99,7 @@ export default function DetalheSalada() {
           <Text style={styles.title}>Detalhe do produto</Text>
         </View>
       </View>
+    <ScrollView style={styles.container}>
       <Image
         style={styles.image}
         source={
@@ -278,12 +279,12 @@ export default function DetalheSalada() {
         </Text>
       </View>
     </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "#fff",
   },
   header: {

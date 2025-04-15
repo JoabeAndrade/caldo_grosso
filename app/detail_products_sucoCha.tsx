@@ -24,7 +24,7 @@ export default function DetalheSucoCha() {
   const { title, description, price } = params;
   const [observacoes, setObservacoes] = useState("");
   return (
-    <ScrollView style={styles.container}>
+    <View style = {{flex : 1, backgroundColor: "#fff"}}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="arrow-back-outline" size={24} color="black" />
@@ -34,6 +34,8 @@ export default function DetalheSucoCha() {
           <Text style={styles.title}>Detalhe do produto</Text>
         </View>
       </View>
+    <ScrollView style={styles.container}>
+      
       <Image
         style={styles.image}
         source={require("../assets/images/suco_laranja.jpg")}
@@ -104,12 +106,12 @@ export default function DetalheSucoCha() {
         </Text>
       </View>
     </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "#fff",
   },
   header: {
